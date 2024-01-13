@@ -1,6 +1,39 @@
 import logo from "./logo.svg";
 import "./App.css";
 import Customer from "./components/Customer";
+import { Table, ThemeProvider, createTheme } from "@mui/material";
+import { TableHead } from "@mui/material";
+import { TableBody } from "@mui/material";
+import { TableRow } from "@mui/material";
+import { TableCell } from "@mui/material";
+import { Paper } from "@mui/material";
+
+// const theme = createTheme();
+
+// theme.spacing(2); // `${8 * 2}px` = '16px'
+// const root = {
+//   width: "100%",
+//   marginTop: theme.spacing(3),
+//   overflowX: 'auto',
+//   // bgcolor: "red",
+// }
+// const table = {
+//   minWidth: 1080,
+//   // color: "red",
+// }
+
+const theme = createTheme();
+
+const styles = () => ({
+  root: {
+    width: "100%",
+    marginTop: theme.spacing(3),
+    overflowX: "auto",
+  },
+  table: {
+    minWidth: 1080,
+  }
+});
 
 const customers = [
   {
@@ -33,22 +66,41 @@ const customers = [
 ];
 
 function App() {
+  const classes = styles();
+
+
   return (
-    <div>
-      {customers.map((c) => {
-        return (
-          <Customer
-            key={c.id}
-            id={c.id}
-            image={c.image}
-            name={c.name}
-            birthday={c.birthday}
-            gender={c.gender}
-            job={c.job}
-          />
-        );
-      })}
-    </div>
+    // <ThemeProvider theme={theme}>
+      <Paper sx={classes.root}>
+        <Table sx={classes.table}>
+          <TableHead>
+            <TableRow>
+              <TableCell>번호</TableCell>
+              <TableCell>이미지</TableCell>
+              <TableCell>이름</TableCell>
+              <TableCell>생년월일</TableCell>
+              <TableCell>성별</TableCell>
+              <TableCell>직업</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {customers.map((c) => {
+              return (
+                <Customer
+                  key={c.id}
+                  id={c.id}
+                  image={c.image}
+                  name={c.name}
+                  birthday={c.birthday}
+                  gender={c.gender}
+                  job={c.job}
+                />
+              );
+            })}
+          </TableBody>
+        </Table>
+      </Paper>
+    // </ThemeProvider>
   );
 }
 
