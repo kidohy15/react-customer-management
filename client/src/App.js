@@ -7,67 +7,96 @@ import { TableBody } from "@mui/material";
 import { TableRow } from "@mui/material";
 import { TableCell } from "@mui/material";
 import { Paper } from "@mui/material";
-
-// const theme = createTheme();
-
-// theme.spacing(2); // `${8 * 2}px` = '16px'
-// const root = {
-//   width: "100%",
-//   marginTop: theme.spacing(3),
-//   overflowX: 'auto',
-//   // bgcolor: "red",
-// }
-// const table = {
-//   minWidth: 1080,
-//   // color: "red",
-// }
-
-const theme = createTheme();
-
-const styles = () => ({
-  root: {
-    width: "100%",
-    marginTop: theme.spacing(3),
-    overflowX: "auto",
-  },
-  table: {
-    minWidth: 1080,
-  },
-});
-
-const customers = [
-  {
-    id: 1,
-    // image: 'http://via.placeholder.com/60x60',
-    image: "https://placebear.com/60/60",
-    name: "홍길동",
-    birthday: "961222",
-    gender: "남자",
-    job: "대학생",
-  },
-  {
-    id: 2,
-    // image: 'http://via.placeholder.com/60x60',
-    image: "https://placebear.com/60/60",
-    name: "이올린",
-    birthday: "201223",
-    gender: "여자",
-    job: "대학생",
-  },
-  {
-    id: 3,
-    // image: 'http://via.placeholder.com/60x60',
-    image: "https://placebear.com/60/60",
-    name: "살라딘",
-    birthday: "241012",
-    gender: "남자",
-    job: "대학생",
-  },
-];
+import { useEffect, useState } from "react";
 
 function App() {
-  const classes = styles();
+  // const theme = createTheme();
 
+  // theme.spacing(2); // `${8 * 2}px` = '16px'
+  // const root = {
+  //   width: "100%",
+  //   marginTop: theme.spacing(3),
+  //   overflowX: 'auto',
+  //   // bgcolor: "red",
+  // }
+  // const table = {
+  //   minWidth: 1080,
+  //   // color: "red",
+  // }
+
+  const theme = createTheme();
+
+  const styles = () => ({
+    root: {
+      width: "100%",
+      marginTop: theme.spacing(3),
+      overflowX: "auto",
+    },
+    table: {
+      minWidth: 1080,
+    },
+  });
+
+  // 서버 개발하면서 제거함
+  // const customers = [
+  //   {
+  //     id: 1,
+  //     // image: 'http://via.placeholder.com/60x60',
+  //     image: "https://placebear.com/60/60",
+  //     name: "홍길동",
+  //     birthday: "961222",
+  //     gender: "남자",
+  //     job: "대학생",
+  //   },
+  //   {
+  //     id: 2,
+  //     // image: 'http://via.placeholder.com/60x60',
+  //     image: "https://placebear.com/60/60",
+  //     name: "이올린",
+  //     birthday: "201223",
+  //     gender: "여자",
+  //     job: "대학생",
+  //   },
+  //   {
+  //     id: 3,
+  //     // image: 'http://via.placeholder.com/60x60',
+  //     image: "https://placebear.com/60/60",
+  //     name: "살라딘",
+  //     birthday: "241012",
+  //     gender: "남자",
+  //     job: "대학생",
+  //   },
+  // ];
+
+  // const state = {
+  //   customers: ""
+  // }
+
+  // componentDidMount() {
+  //   this.callApi()
+  // }
+
+  const [customers, setCustomers] = useState([]);
+
+  useEffect(() => {
+    callApi();
+  }, []);
+
+  const callApi = async (data) => {
+    const response = await fetch("/api/customers", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then((body) => {
+        console.log(body);
+        setCustomers(body);
+      });
+
+    return response;
+  };
+
+  const classes = styles();
   return (
     // <ThemeProvider theme={theme}>
     <Paper sx={classes.root}>
@@ -83,19 +112,21 @@ function App() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {customers.map((c) => {
-            return (
-              <Customer
-                key={c.id}
-                id={c.id}
-                image={c.image}
-                name={c.name}
-                birthday={c.birthday}
-                gender={c.gender}
-                job={c.job}
-              />
-            );
-          })}
+          {customers
+            ? customers.map((c) => {
+                return (
+                  <Customer
+                    key={c.id}
+                    id={c.id}
+                    image={c.image}
+                    name={c.name}
+                    birthday={c.birthday}
+                    gender={c.gender}
+                    job={c.job}
+                  />
+                );
+              })
+            : ""}
         </TableBody>
       </Table>
     </Paper>

@@ -4,11 +4,12 @@
   "scripts": {
     "client": "cd client && yarn start",
     "server": "nodemon server.js",
-    "dev": "concurrently --kill0others-on-fail \"yarn server\" \"yarn client\""
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
   "dependencies": {
     "body-parser": "1.20.2",
     "express": "^4.16.4",
+    "http-proxy-middleware": "^2.0.6",
     "nodemon": "^3.0.2"
   },
   "devDependencies": {
