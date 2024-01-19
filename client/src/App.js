@@ -8,6 +8,27 @@ import { TableRow } from "@mui/material";
 import { TableCell } from "@mui/material";
 import { Paper } from "@mui/material";
 import { useEffect, useState } from "react";
+import { CircularProgress } from "@mui/material";
+
+/*
+리액트가 컴포넌트를 실행할 때의 라이프 사이클은 아래를 따른다
+
+1) constructor() => 생성자를 불러온다
+2) componentWillMount() => 컴포넌트가 마운트되기 전에 해당 함수 실행
+3) render() => 컴포넌트를 화면에 그린다
+4) componentDidMount() => 컴포넌트가 마운트되고 나서 해당 함수 실행
+
+*/
+
+/*
+
+props or state => sholdComponentUpdate() 
+=> props, state가 변경되는 경우에는 해당 함수가 실행되고 
+실질적으로 다시 render 함수를 호출해서 뷰를 갱신해준다
+리액트는 상태의 변화를 알아서 잘 감지해서 뷰를 다시 재구성해주기 때문에
+개발자는 상태만 잘 관리해주면 된다
+
+*/
 
 function App() {
   // const theme = createTheme();
@@ -34,6 +55,9 @@ function App() {
     },
     table: {
       minWidth: 1080,
+    },
+    progress: {
+      margin: theme.spacing(2),
     },
   });
 
@@ -76,10 +100,24 @@ function App() {
   //   this.callApi()
   // }
 
-  const [customers, setCustomers] = useState([]);
+  const [customers, setCustomers] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const [completed, setCompleted] = useState(0);
 
   useEffect(() => {
+    console.log("렌더링1 🐰", isLoading);
+
+    let timer = setInterval(() => {
+      progress(completed)
+      console.log("completed!!", completed);
+    }, 300);
+
+    console.log("렌더링2 🐰");
+
     callApi();
+    clearInterval(timer);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const callApi = async (data) => {
@@ -95,6 +133,11 @@ function App() {
 
     return response;
   };
+
+  const progress = (completed) => {
+    setCompleted((completed) => completed >= 100 ? 0 : completed + 5);
+    console.log("렌더링22?? 🐰");
+  }
 
   const classes = styles();
   return (
@@ -112,21 +155,32 @@ function App() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {customers
-            ? customers.map((c) => {
-                return (
-                  <Customer
-                    key={c.id}
-                    id={c.id}
-                    image={c.image}
-                    name={c.name}
-                    birthday={c.birthday}
-                    gender={c.gender}
-                    job={c.job}
-                  />
-                );
-              })
-            : ""}
+          {customers ? (
+            customers.map((c) => {
+              return (
+                <Customer
+                  key={c.id}
+                  id={c.id}
+                  image={c.image}
+                  name={c.name}
+                  birthday={c.birthday}
+                  gender={c.gender}
+                  job={c.job}
+                  onLoad={() => setIsLoading(false)}
+                />
+              );
+            })
+          ) : (
+            <TableRow>
+              <TableCell colSpan={"6"} align="center">
+                <CircularProgress
+                  sx={classes.progress}
+                  variant="determinate"
+                  value={completed}
+                />
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </Paper>
