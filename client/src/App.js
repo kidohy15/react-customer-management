@@ -108,7 +108,7 @@ function App() {
     console.log("렌더링1 🐰", isLoading);
 
     let timer = setInterval(() => {
-      progress(completed)
+      progress(completed);
       console.log("completed!!", completed);
     }, 300);
 
@@ -120,24 +120,20 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const callApi = async (data) => {
-    const response = await fetch("/api/customers", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((res) => res.json())
-      .then((body) => {
-        console.log(body);
-        setCustomers(body);
-      });
+  const callApi = async () => {
+    console.log("렌더링3 🐰");
+    const response = await fetch("/api/customers");
+    const body = await response.json();
+    console.log("랜더링4", body);
+    setCustomers(body);
 
-    return response;
+    return body;
   };
 
   const progress = (completed) => {
-    setCompleted((completed) => completed >= 100 ? 0 : completed + 5);
+    setCompleted((completed) => (completed >= 100 ? 0 : completed + 5));
     console.log("렌더링22?? 🐰");
-  }
+  };
 
   const classes = styles();
   return (
