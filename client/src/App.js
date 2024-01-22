@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import Customer from "./components/Customer";
 import { Table, ThemeProvider, createTheme } from "@mui/material";
@@ -9,6 +8,9 @@ import { TableCell } from "@mui/material";
 import { Paper } from "@mui/material";
 import { useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
+import CustomerAdd from "./components/CustomerAdd";
+import { useRecoilState } from "recoil";
+import { customersState } from "./atoms";
 
 /*
 리액트가 컴포넌트를 실행할 때의 라이프 사이클은 아래를 따른다
@@ -100,7 +102,8 @@ function App() {
   //   this.callApi()
   // }
 
-  const [customers, setCustomers] = useState();
+  // const [customers, setCustomers] = useState();
+  const [customers, setCustomers] = useRecoilState(customersState);
   const [isLoading, setIsLoading] = useState(true);
   const [completed, setCompleted] = useState(0);
 
@@ -125,7 +128,12 @@ function App() {
     const response = await fetch("/api/customers");
     const body = await response.json();
     console.log("랜더링4", body);
-    setCustomers(body);
+    console.log("랜더링4", ...body);
+
+    setCustomers((body) =>
+       [...body]);
+    console.log("===");
+    console.log("랜더링6", customers);
 
     return body;
   };
@@ -137,50 +145,53 @@ function App() {
 
   const classes = styles();
   return (
-    // <ThemeProvider theme={theme}>
-    <Paper sx={classes.root}>
-      <Table sx={classes.table}>
-        <TableHead>
-          <TableRow>
-            <TableCell>번호</TableCell>
-            <TableCell>이미지</TableCell>
-            <TableCell>이름</TableCell>
-            <TableCell>생년월일</TableCell>
-            <TableCell>성별</TableCell>
-            <TableCell>직업</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {customers ? (
-            customers.map((c) => {
-              return (
-                <Customer
-                  key={c.id}
-                  id={c.id}
-                  image={c.image}
-                  name={c.name}
-                  birthday={c.birthday}
-                  gender={c.gender}
-                  job={c.job}
-                  onLoad={() => setIsLoading(false)}
-                />
-              );
-            })
-          ) : (
-            <TableRow>
-              <TableCell colSpan={"6"} align="center">
-                <CircularProgress
-                  sx={classes.progress}
-                  variant="determinate"
-                  value={completed}
-                />
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </Paper>
-    // </ThemeProvider>
+    <div>
+      <ThemeProvider theme={theme}>
+        <Paper sx={classes.root}>
+          <Table sx={classes.table}>
+            <TableHead>
+              <TableRow>
+                <TableCell>번호</TableCell>
+                <TableCell>이미지</TableCell>
+                <TableCell>이름</TableCell>
+                <TableCell>생년월일</TableCell>
+                <TableCell>성별</TableCell>
+                <TableCell>직업</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {customers ? (
+                 [...Array(customers[0])].map((c,index) => {
+                  return (
+                    <Customer
+                      key={c.id}
+                      id={c.id}
+                      image={c.image}
+                      name={c.name}
+                      birthday={c.birthday}
+                      gender={c.gender}
+                      job={c.job}
+                      onLoad={() => setIsLoading(false)}
+                    />
+                  );
+                })
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={"6"} align="center">
+                    <CircularProgress
+                      sx={classes.progress}
+                      variant="determinate"
+                      value={completed}
+                    />
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </Paper>
+        <CustomerAdd />
+      </ThemeProvider>
+    </div>
   );
 }
 
