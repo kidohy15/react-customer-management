@@ -6,14 +6,16 @@ import { atom } from "recoil";
 //   dangerouslyAllowMutability: true,
 // });
 
-export const customersState = atom({
-  key: "customers",
-  default: [{
-    id: null,
-    image: "",
-    name: "",
-    birthday: "",
-    gender: "",
-    job: "",
-  }],
-});
+// export const customersState = atom({
+//   key: "customers",
+//   default: [
+//     {
+//       id: null,
+//       image: "",
+//       name: "",
+//       birthday: "",
+//       gender: "",
+//       job: "",
+//     },
+//   ],
+// });

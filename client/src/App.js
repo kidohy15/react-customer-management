@@ -102,8 +102,8 @@ function App() {
   //   this.callApi()
   // }
 
-  // const [customers, setCustomers] = useState();
-  const [customers, setCustomers] = useRecoilState(customersState);
+  const [customers, setCustomers] = useState();
+  // const [customers, setCustomers] = useRecoilState(customersState);
   const [isLoading, setIsLoading] = useState(true);
   const [completed, setCompleted] = useState(0);
 
@@ -118,6 +118,7 @@ function App() {
     console.log("렌더링2 🐰");
 
     callApi();
+    // setIsLoading(false);
     clearInterval(timer);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -130,11 +131,13 @@ function App() {
     console.log("랜더링4", body);
     console.log("랜더링4", ...body);
 
-    setCustomers((body) =>
-       [...body]);
-    console.log("===");
-    console.log("랜더링6", customers);
+    // setCustomers((body) =>
+    //    [...body]);
+    // console.log("===");
+    // console.log("랜더링6", customers);
 
+    setCustomers(body);
+    console.log("랜더링7", customers);
     return body;
   };
 
@@ -160,17 +163,19 @@ function App() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {customers ? (
-                 [...Array(customers[0])].map((c,index) => {
+              {true ? (
+                customers?.map((c, index) => {
+                  console.log("1");
                   return (
                     <Customer
                       key={c.id}
-                      id={c.id}
-                      image={c.image}
-                      name={c.name}
-                      birthday={c.birthday}
-                      gender={c.gender}
-                      job={c.job}
+                      customer={c}
+                      // id={c.id}
+                      // image={c.image}
+                      // name={c.name}
+                      // birthday={c.birthday}
+                      // gender={c.gender}
+                      // job={c.job}
                       onLoad={() => setIsLoading(false)}
                     />
                   );

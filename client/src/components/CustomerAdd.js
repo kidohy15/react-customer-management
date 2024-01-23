@@ -3,27 +3,28 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import { customersState } from "../atoms";
 
-const CustomerAdd = () => {
-  const [customers, setCustomers] = useRecoilState(customersState);
+const CustomerAdd = ({}) => {
+  // const [customers, setCustomers] = useRecoilState(customersState);
   const [file, setFile] = useState();
+  const [customers, setCustomers] = useState({});
   const [fileName, setFileName] = useState();
+  console.log("customers!!!!!", customers);
+  // console.log(customer);
 
-  const customerList = customers.customerList;
+  // const customerList = customers.customerList;
 
   const handleFileChange = (event) => {
-    setFile({
-      file: event.target.files[0],
-    });
-    setFileName({
-      fileName: event.target.value,
-    });
+    console.log("event", event);
+    console.log("event", event.target.files[0]);
+    setFile(event.target.files[0]);
+    setFileName(event.target.value);
   };
 
-  const handleValueChange = (event) => {
-    let nextState = {};
-    nextState[event.target.name] = event.target.value;
-    setCustomers(nextState);
-  };
+  // const handleValueChange = (event) => {
+  //   let nextState = {};
+  //   nextState[event.target.name] = event.target.value;
+  //   setCustomers(...customers,nextState);
+  // };
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -36,13 +37,13 @@ const CustomerAdd = () => {
     const url = "/api/customers";
     const formData = new FormData();
     formData.append("image", file);
-    formData.append("name", customerList.name);
-    formData.append("birthday", customerList.birthday);
-    formData.append("gender", customerList.gender);
-    formData.append("job", customerList.job);
+    formData.append("name", customers.name);
+    formData.append("birthday", customers.birthday);
+    formData.append("gender", customers.gender);
+    formData.append("job", customers.job);
     const config = {
       headers: {
-        "content-type:": "multipart/form-data",
+        "content-type": "multipart/form-data",
       },
     };
     return axios.post(url, formData, config);
@@ -63,9 +64,11 @@ const CustomerAdd = () => {
       이름:{" "}
       <input
         type="text"
-        name="userName"
-        value={customers.userName}
-        onChange={(event) => handleValueChange(event)}
+        name="name"
+        value={customers.name}
+        onChange={(event) =>
+          setCustomers({ ...customers, name: event.target.value })
+        }
       />
       <br />
       생년원일:{" "}
@@ -73,7 +76,10 @@ const CustomerAdd = () => {
         type="text"
         name="birthday"
         value={customers.birthday}
-        onChange={(event) => handleValueChange(event)}
+        // onChange={(event) => handleValueChange(event)}
+        onChange={(event) =>
+          setCustomers({ ...customers, birthday: event.target.value })
+        }
       />
       <br />
       성별:{" "}
@@ -81,7 +87,10 @@ const CustomerAdd = () => {
         type="text"
         name="gender"
         value={customers.gender}
-        onChange={(event) => handleValueChange(event)}
+        // onChange={(event) => handleValueChange(event)}
+        onChange={(event) =>
+          setCustomers({ ...customers, gender: event.target.value })
+        }
       />
       <br />
       직업:{" "}
@@ -89,9 +98,13 @@ const CustomerAdd = () => {
         type="text"
         name="job"
         value={customers.job}
-        onChange={(event) => handleValueChange(event)}
+        // onChange={(event) => handleValueChange(event)}
+        onChange={(event) =>
+          setCustomers({ ...customers, job: event.target.value })
+        }
       />
       <br />
+      <button type="submit">추가하기</button>
     </form>
   );
 };

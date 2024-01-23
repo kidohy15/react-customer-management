@@ -4,30 +4,29 @@ import { customersState } from "../atoms";
 import { TableRow } from "@mui/material";
 import { TableCell } from "@mui/material";
 
-const Customer = () => {
+const Customer = ({ customer }) => {
   // const [customers, setCustomers] = useRecoilState(customersState);
   const customers = useRecoilValue(customersState);
 
   // const customerList = customers.customerList[0]
-  // console.log("customerList", customerList);
+  console.log("customer!!", customer);
 
   return (
-          // Material UI 활용
-      <TableRow>
-        <TableCell>{customers.id}</TableCell>
-        <TableCell>
-          <img src={customers.image} alt="profile" />
-        </TableCell>
-        <TableCell>{customers.name}</TableCell>
-        <TableCell>{customers.birthday}</TableCell>
-        <TableCell>{customers.gender}</TableCell>
-        <TableCell>{customers.job}</TableCell>
-      </TableRow>
-  )
-}
+    // Material UI 활용
+    <TableRow>
+      <TableCell>{customer.id}</TableCell>
+      <TableCell>
+        <img src={customer.image} alt="profile" />
+      </TableCell>
+      <TableCell>{customer.name}</TableCell>
+      <TableCell>{customer.birthday}</TableCell>
+      <TableCell>{customer.gender}</TableCell>
+      <TableCell>{customer.job}</TableCell>
+    </TableRow>
+  );
+};
 
-export default Customer
-
+export default Customer;
 
 // class Customer extends React.Component {
 //   render() {
