@@ -1,15 +1,40 @@
-import React from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { customersState } from "../atoms";
+import React, { useEffect, useState } from "react";
+// import { useRecoilState, useRecoilValue } from "recoil";
+// import { customersState } from "../atoms";
 import { TableRow } from "@mui/material";
 import { TableCell } from "@mui/material";
 
 const Customer = ({ customer }) => {
   // const [customers, setCustomers] = useRecoilState(customersState);
-  const customers = useRecoilValue(customersState);
+  // const customers = useRecoilValue(customersState);
+
+  const [files, setFiles] = useState(customer.image);
+  const [Base64s, setBase64s] = useState([]);
 
   // const customerList = customers.customerList[0]
   console.log("customer!!", customer);
+  console.log("image!!", customer.image);
+ 
+
+  const encodeFileToBase64 = (image) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(image);
+      reader.onload = (event) => resolve(event.target.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  useEffect(() => {
+    if (files) {
+      setBase64s([]);
+      Array.from(files).forEach((image) => {
+        encodeFileToBase64(image).then((data) =>
+          setBase64s((prev) => [...prev, { image: image, url: data }])
+        );
+      });
+    }
+  }, [files]);
 
   return (
     // Material UI 활용

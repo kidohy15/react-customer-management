@@ -1,23 +1,29 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useRecoilState } from "recoil";
-import { customersState } from "../atoms";
+// import { useRecoilState } from "recoil";
+// import { customersState } from "../atoms";
 
-const CustomerAdd = ({}) => {
+const CustomerAdd = () => {
   // const [customers, setCustomers] = useRecoilState(customersState);
-  const [file, setFile] = useState();
+  const [file, setFile] = useState([]);
   const [customers, setCustomers] = useState({});
-  const [fileName, setFileName] = useState();
+  const [fileName, setFileName] = useState("");
   console.log("customers!!!!!", customers);
+  console.log("customers!!!!!", customers.name);
   // console.log(customer);
 
   // const customerList = customers.customerList;
 
   const handleFileChange = (event) => {
-    console.log("event", event);
-    console.log("event", event.target.files[0]);
-    setFile(event.target.files[0]);
-    setFileName(event.target.value);
+    event.preventDefault();
+    console.log("handleFileChange customers!!!!!", customers);
+    console.log("event1", event);
+    console.log("event2", event.target.files[0]);
+    console.log("event3", event.target.files[0].name);
+    let uploadFile = event.target.files[0];
+    setFile(uploadFile);
+    setFileName(uploadFile.name);
+    console.log("uploadFile", uploadFile);
   };
 
   // const handleValueChange = (event) => {
@@ -29,11 +35,20 @@ const CustomerAdd = ({}) => {
   const handleFormSubmit = (event) => {
     event.preventDefault();
     addCustomer().then((response) => {
-      console.log(response.data);
+      console.log("handleFormSubmit response", response.data);
     });
+    setFile(null);
+    setFileName('');
+    setCustomers('image','');
+    setCustomers('name','');
+    setCustomers('birthday','');
+    setCustomers('gender','');
+    setCustomers('job', '');
+    // window.location.reload();
   };
 
   const addCustomer = () => {
+    console.log("addCustomer customers!!!!!", customers);
     const url = "/api/customers";
     const formData = new FormData();
     formData.append("image", file);
@@ -46,7 +61,9 @@ const CustomerAdd = ({}) => {
         "content-type": "multipart/form-data",
       },
     };
-    return axios.post(url, formData, config);
+    const result = axios.post(url, formData, config);
+    console.log("result", result)
+    return result;
   };
 
   return (
@@ -56,9 +73,10 @@ const CustomerAdd = ({}) => {
       <input
         type="file"
         name="file"
+        accept='.jpg' 
         file={file}
-        value={fileName}
-        onChange={(event) => handleFileChange(event)}
+        // value={fileName}
+        onChange={handleFileChange}
       />
       <br />
       이름:{" "}
