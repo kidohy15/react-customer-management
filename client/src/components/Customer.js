@@ -16,25 +16,25 @@ const Customer = ({ customer }) => {
   console.log("image!!", customer.image);
  
 
-  const encodeFileToBase64 = (image) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(image);
-      reader.onload = (event) => resolve(event.target.result);
-      reader.onerror = (error) => reject(error);
-    });
-  };
+  // const encodeFileToBase64 = (image) => {
+  //   return new Promise((resolve, reject) => {
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(image);
+  //     reader.onload = (event) => resolve(event.target.result);
+  //     reader.onerror = (error) => reject(error);
+  //   });
+  // };
 
-  useEffect(() => {
-    if (files) {
-      setBase64s([]);
-      Array.from(files).forEach((image) => {
-        encodeFileToBase64(image).then((data) =>
-          setBase64s((prev) => [...prev, { image: image, url: data }])
-        );
-      });
-    }
-  }, [files]);
+  // useEffect(() => {
+  //   if (files) {
+  //     setBase64s([]);
+  //     Array.from(files).forEach((image) => {
+  //       encodeFileToBase64(image).then((data) =>
+  //         setBase64s((prev) => [...prev, { image: image, url: data }])
+  //       );
+  //     });
+  //   }
+  // }, [files]);
 
   return (
     // Material UI 활용

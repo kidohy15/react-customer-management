@@ -124,6 +124,12 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const stateRefresh = () => {
+    // setCustomers("");
+    // setCompleted(0);
+    callApi();
+  };
+
   const callApi = async () => {
     console.log("렌더링3 🐰");
     const response = await fetch("/api/customers");
@@ -194,7 +200,7 @@ function App() {
             </TableBody>
           </Table>
         </Paper>
-        <CustomerAdd />
+        <CustomerAdd stateRefresh={stateRefresh} />
       </ThemeProvider>
     </div>
   );

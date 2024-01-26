@@ -3,7 +3,7 @@ import axios from "axios";
 // import { useRecoilState } from "recoil";
 // import { customersState } from "../atoms";
 
-const CustomerAdd = () => {
+const CustomerAdd = ({ stateRefresh }) => {
   // const [customers, setCustomers] = useRecoilState(customersState);
   const [file, setFile] = useState([]);
   const [customers, setCustomers] = useState({});
@@ -34,16 +34,19 @@ const CustomerAdd = () => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    addCustomer().then((response) => {
-      console.log("handleFormSubmit response", response.data);
-    });
+    addCustomer()
+      .then((response) => {
+        console.log("handleFormSubmit response", response.data);
+      })
+      .then(() => stateRefresh());
     setFile(null);
-    setFileName('');
-    setCustomers('image','');
-    setCustomers('name','');
-    setCustomers('birthday','');
-    setCustomers('gender','');
-    setCustomers('job', '');
+    setFileName("");
+    setCustomers("image", "");
+    setCustomers("name", "");
+    setCustomers("birthday", "");
+    setCustomers("gender", "");
+    setCustomers("job", "");
+
     // window.location.reload();
   };
 
@@ -62,7 +65,7 @@ const CustomerAdd = () => {
       },
     };
     const result = axios.post(url, formData, config);
-    console.log("result", result)
+    console.log("result", result);
     return result;
   };
 
@@ -73,7 +76,7 @@ const CustomerAdd = () => {
       <input
         type="file"
         name="file"
-        accept='.jpg' 
+        accept=".jpg"
         file={file}
         // value={fileName}
         onChange={handleFileChange}
