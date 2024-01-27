@@ -20,8 +20,8 @@ const connection = mysql.createConnection({
 });
 connection.connect();
 
-const multer = require('multer');
-const upload = multer({ dest: './upload' });
+const multer = require("multer");
+const upload = multer({ dest: "./upload" });
 
 // 서버 응답 테스트용
 // app.get('/api/hello', (req, res) => {
@@ -29,18 +29,21 @@ const upload = multer({ dest: './upload' });
 // });
 
 app.get("/api/customers", (req, res) => {
-  connection.query("SELECT * FROM CUSTOMER", (err, rows, fields) => {
-    console.log("rows", rows);
-    res.send(rows);
-  });
+  connection.query(
+    "SELECT * FROM CUSTOMER WHERE isDeleted = 0",
+    (err, rows, fields) => {
+      console.log("rows", rows);
+      res.send(rows);
+    }
+  );
 });
 
-app.use('/image', express.static('./upload'));
+app.use("/image", express.static("./upload"));
 
-app.post('/api/customers', upload.single('image'), (req, res) => {
-  console.log("==============================",req.file);
-  let sql = 'INSERT INTO CUSTOMER VALUES (null, ?, ?, ?, ?, ?)';
-  let image = '/image/' + req.file.filename;
+app.post("/api/customers", upload.single("image"), (req, res) => {
+  console.log("==============================", req.file);
+  let sql = "INSERT INTO CUSTOMER VALUES (null, ?, ?, ?, ?, ?, now(), 0)";
+  let image = "/image/" + req.file.filename;
   let name = req.body.name;
   let birthday = req.body.birthday;
   let gender = req.body.gender;
@@ -49,6 +52,14 @@ app.post('/api/customers', upload.single('image'), (req, res) => {
   connection.query(sql, params, (err, rows, fields) => {
     res.send(rows);
   });
-})
+});
+
+app.delete("/api/customers/:id", (req, res) => {
+  let sql = "UPDATE CUSTOMER SET isDeleted = 1 WHERE id =?";
+  let params = [req.params.id];
+  connection.query(sql, params, (err, rows, fields) => {
+    res.send(rows);
+  });
+});
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

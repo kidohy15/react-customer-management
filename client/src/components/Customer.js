@@ -3,8 +3,9 @@ import React, { useEffect, useState } from "react";
 // import { customersState } from "../atoms";
 import { TableRow } from "@mui/material";
 import { TableCell } from "@mui/material";
+import CustomerDelete from "./CustomerDelete";
 
-const Customer = ({ customer }) => {
+const Customer = ({ customer, stateRefresh }) => {
   // const [customers, setCustomers] = useRecoilState(customersState);
   // const customers = useRecoilValue(customersState);
 
@@ -47,6 +48,7 @@ const Customer = ({ customer }) => {
       <TableCell>{customer.birthday}</TableCell>
       <TableCell>{customer.gender}</TableCell>
       <TableCell>{customer.job}</TableCell>
+      <TableCell><CustomerDelete stateRefresh={stateRefresh} id={customer.id}  /></TableCell>
     </TableRow>
   );
 };
