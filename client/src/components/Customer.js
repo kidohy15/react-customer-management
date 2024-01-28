@@ -1,21 +1,11 @@
 import React, { useEffect, useState } from "react";
-// import { useRecoilState, useRecoilValue } from "recoil";
-// import { customersState } from "../atoms";
 import { TableRow } from "@mui/material";
 import { TableCell } from "@mui/material";
 import CustomerDelete from "./CustomerDelete";
 
 const Customer = ({ customer, stateRefresh }) => {
-  // const [customers, setCustomers] = useRecoilState(customersState);
-  // const customers = useRecoilValue(customersState);
-
   const [files, setFiles] = useState(customer.image);
   const [Base64s, setBase64s] = useState([]);
-
-  // const customerList = customers.customerList[0]
-  console.log("customer!!", customer);
-  console.log("image!!", customer.image);
- 
 
   // const encodeFileToBase64 = (image) => {
   //   return new Promise((resolve, reject) => {
@@ -48,7 +38,9 @@ const Customer = ({ customer, stateRefresh }) => {
       <TableCell>{customer.birthday}</TableCell>
       <TableCell>{customer.gender}</TableCell>
       <TableCell>{customer.job}</TableCell>
-      <TableCell><CustomerDelete stateRefresh={stateRefresh} id={customer.id}  /></TableCell>
+      <TableCell>
+        <CustomerDelete stateRefresh={stateRefresh} id={customer.id} />
+      </TableCell>
     </TableRow>
   );
 };

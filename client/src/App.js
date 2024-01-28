@@ -9,8 +9,6 @@ import { Paper } from "@mui/material";
 import { useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
 import CustomerAdd from "./components/CustomerAdd";
-import { useRecoilState } from "recoil";
-import { customersState } from "./atoms";
 
 /*
 리액트가 컴포넌트를 실행할 때의 라이프 사이클은 아래를 따른다
@@ -46,22 +44,6 @@ function App() {
   //   minWidth: 1080,
   //   // color: "red",
   // }
-
-  const theme = createTheme();
-
-  const styles = () => ({
-    root: {
-      width: "100%",
-      marginTop: theme.spacing(3),
-      overflowX: "auto",
-    },
-    table: {
-      minWidth: 1080,
-    },
-    progress: {
-      margin: theme.spacing(2),
-    },
-  });
 
   // 서버 개발하면서 제거함
   // const customers = [
@@ -102,8 +84,23 @@ function App() {
   //   this.callApi()
   // }
 
+  const theme = createTheme();
+
+  const styles = () => ({
+    root: {
+      width: "100%",
+      marginTop: theme.spacing(3),
+      overflowX: "auto",
+    },
+    table: {
+      minWidth: 1080,
+    },
+    progress: {
+      margin: theme.spacing(2),
+    },
+  });
+
   const [customers, setCustomers] = useState();
-  // const [customers, setCustomers] = useRecoilState(customersState);
   const [isLoading, setIsLoading] = useState(true);
   const [completed, setCompleted] = useState(0);
 
@@ -118,15 +115,12 @@ function App() {
     console.log("렌더링2 🐰");
 
     callApi();
-    // setIsLoading(false);
     clearInterval(timer);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const stateRefresh = () => {
-    // setCustomers("");
-    // setCompleted(0);
     callApi();
   };
 
@@ -134,16 +128,8 @@ function App() {
     console.log("렌더링3 🐰");
     const response = await fetch("/api/customers");
     const body = await response.json();
-    console.log("랜더링4", body);
-    console.log("랜더링4", ...body);
-
-    // setCustomers((body) =>
-    //    [...body]);
-    // console.log("===");
-    // console.log("랜더링6", customers);
 
     setCustomers(body);
-    console.log("랜더링7", customers);
     return body;
   };
 
