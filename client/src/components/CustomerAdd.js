@@ -90,7 +90,8 @@ const CustomerAdd = ({ stateRefresh }) => {
 
   const styles = () => ({
     hidden: {
-      display: "none",
+      // display: "none",
+      backgroundColor: "red",
     },
   });
 
