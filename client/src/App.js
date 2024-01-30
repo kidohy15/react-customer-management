@@ -6,7 +6,7 @@ import { TableBody } from "@mui/material";
 import { TableRow } from "@mui/material";
 import { TableCell } from "@mui/material";
 import { Paper } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
 import CustomerAdd from "./components/CustomerAdd";
 
@@ -184,6 +184,7 @@ function App() {
   const [customers, setCustomers] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [completed, setCompleted] = useState(0);
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   useEffect(() => {
     console.log("렌더링1 🐰", isLoading);
@@ -196,6 +197,7 @@ function App() {
     console.log("렌더링2 🐰");
 
     callApi();
+    // setSearchKeyword("");
     clearInterval(timer);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -211,6 +213,7 @@ function App() {
     const body = await response.json();
 
     setCustomers(body);
+    // setSearchKeyword("");
     return body;
   };
 
@@ -229,6 +232,43 @@ function App() {
     "직업",
     "설정",
   ];
+  // let searchKeyword = "";
+  // (e) => setSearchKeyword(e.target.value)
+  const handleValueChange = (e) => {
+    e.preventDefault();
+    setSearchKeyword(e.target.value);
+    // console.log(searchKeyword)
+    // console.log(e.target.value)
+    // let nextState = {};
+    // nextState[e.target.name] = e.target.name;
+    // setSearchKeyword = e.target.value
+  };
+
+  const filteredComponents = (data) => {
+    console.log("data", data);
+    console.log("searchKeyword", searchKeyword);
+    data = data?.filter((c) => {
+      return c?.name.indexOf(searchKeyword) > -1;
+    });
+    return data?.map((c) => {
+      console.log("1");
+      return (
+        <Customer
+          key={c.id}
+          customer={c}
+          stateRefresh={stateRefresh}
+          // id={c.id}
+          // image={c.image}
+          // name={c.name}
+          // birthday={c.birthday}
+          // gender={c.gender}
+          // job={c.job}
+          onLoad={() => setIsLoading(false)}
+        />
+      );
+    });
+  };
+
   return (
     // <div sx={classes.root}>
     <Root>
@@ -258,8 +298,12 @@ function App() {
                   <SearchIcon />
                 </SearchIconWrapper>
                 <StyledInputBase
-                  placeholder="Search…"
+                  placeholder="검색하기"
                   inputProps={{ "aria-label": "search" }}
+                  name="searchKeyword"
+                  value={searchKeyword}
+                  // onChange={handleValueChange}
+                  onChange={(event) => setSearchKeyword(event.target.value)}
                 />
               </Search>
             </Toolbar>
@@ -283,23 +327,7 @@ function App() {
             </TableHead>
             <TableBody>
               {true ? (
-                customers?.map((c, index) => {
-                  console.log("1");
-                  return (
-                    <Customer
-                      key={c.id}
-                      customer={c}
-                      stateRefresh={stateRefresh}
-                      // id={c.id}
-                      // image={c.image}
-                      // name={c.name}
-                      // birthday={c.birthday}
-                      // gender={c.gender}
-                      // job={c.job}
-                      onLoad={() => setIsLoading(false)}
-                    />
-                  );
-                })
+                filteredComponents(customers)
               ) : (
                 <TableRow>
                   <TableCell colSpan={"6"} align="center">
