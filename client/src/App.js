@@ -21,79 +21,22 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 
 /*
-리액트가 컴포넌트를 실행할 때의 라이프 사이클은 아래를 따른다
-
-1) constructor() => 생성자를 불러온다
-2) componentWillMount() => 컴포넌트가 마운트되기 전에 해당 함수 실행
-3) render() => 컴포넌트를 화면에 그린다
-4) componentDidMount() => 컴포넌트가 마운트되고 나서 해당 함수 실행
-
+  리액트가 컴포넌트를 실행할 때의 라이프 사이클은 아래를 따른다
+  1) constructor() => 생성자를 불러온다
+  2) componentWillMount() => 컴포넌트가 마운트되기 전에 해당 함수 실행
+  3) render() => 컴포넌트를 화면에 그린다
+  4) componentDidMount() => 컴포넌트가 마운트되고 나서 해당 함수 실행
 */
 
 /*
-
-props or state => sholdComponentUpdate() 
-=> props, state가 변경되는 경우에는 해당 함수가 실행되고 
-실질적으로 다시 render 함수를 호출해서 뷰를 갱신해준다
-리액트는 상태의 변화를 알아서 잘 감지해서 뷰를 다시 재구성해주기 때문에
-개발자는 상태만 잘 관리해주면 된다
-
+  props or state => sholdComponentUpdate() 
+  => props, state가 변경되는 경우에는 해당 함수가 실행되고 
+  실질적으로 다시 render 함수를 호출해서 뷰를 갱신해준다
+  리액트는 상태의 변화를 알아서 잘 감지해서 뷰를 다시 재구성해주기 때문에
+  개발자는 상태만 잘 관리해주면 된다
 */
 
 function App() {
-  // const theme = createTheme();
-
-  // theme.spacing(2); // `${8 * 2}px` = '16px'
-  // const root = {
-  //   width: "100%",
-  //   marginTop: theme.spacing(3),
-  //   overflowX: 'auto',
-  //   // bgcolor: "red",
-  // }
-  // const table = {
-  //   minWidth: 1080,
-  //   // color: "red",
-  // }
-
-  // 서버 개발하면서 제거함
-  // const customers = [
-  //   {
-  //     id: 1,
-  //     // image: 'http://via.placeholder.com/60x60',
-  //     image: "https://placebear.com/60/60",
-  //     name: "홍길동",
-  //     birthday: "961222",
-  //     gender: "남자",
-  //     job: "대학생",
-  //   },
-  //   {
-  //     id: 2,
-  //     // image: 'http://via.placeholder.com/60x60',
-  //     image: "https://placebear.com/60/60",
-  //     name: "이올린",
-  //     birthday: "201223",
-  //     gender: "여자",
-  //     job: "대학생",
-  //   },
-  //   {
-  //     id: 3,
-  //     // image: 'http://via.placeholder.com/60x60',
-  //     image: "https://placebear.com/60/60",
-  //     name: "살라딘",
-  //     birthday: "241012",
-  //     gender: "남자",
-  //     job: "대학생",
-  //   },
-  // ];
-
-  // const state = {
-  //   customers: ""
-  // }
-
-  // componentDidMount() {
-  //   this.callApi()
-  // }
-
   const theme = createTheme();
 
   const Search = styled("div")(({ theme }) => ({
@@ -232,16 +175,9 @@ function App() {
     "직업",
     "설정",
   ];
-  // let searchKeyword = "";
-  // (e) => setSearchKeyword(e.target.value)
+
   const handleValueChange = (e) => {
-    e.preventDefault();
     setSearchKeyword(e.target.value);
-    // console.log(searchKeyword)
-    // console.log(e.target.value)
-    // let nextState = {};
-    // nextState[e.target.name] = e.target.name;
-    // setSearchKeyword = e.target.value
   };
 
   const filteredComponents = (data) => {
@@ -302,8 +238,8 @@ function App() {
                   inputProps={{ "aria-label": "search" }}
                   name="searchKeyword"
                   value={searchKeyword}
-                  // onChange={handleValueChange}
-                  onChange={(event) => setSearchKeyword(event.target.value)}
+                  onChange={handleValueChange}
+                  // onChange={(event) => setSearchKeyword(event.target.value)}
                 />
               </Search>
             </Toolbar>
@@ -326,7 +262,7 @@ function App() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {true ? (
+              {true && customers? (
                 filteredComponents(customers)
               ) : (
                 <TableRow>

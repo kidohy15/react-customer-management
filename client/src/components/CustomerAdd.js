@@ -14,8 +14,6 @@ const CustomerAdd = ({ stateRefresh }) => {
   const [customers, setCustomers] = useState({});
   const [fileName, setFileName] = useState("");
   const [open, setOpen] = useState(false);
-  console.log("customers!!!!!", customers);
-  console.log("customers!!!!!", customers.name);
 
   const handleFileChange = (event) => {
     event.preventDefault();
@@ -25,7 +23,7 @@ const CustomerAdd = ({ stateRefresh }) => {
     console.log("event3", event.target.files[0].name);
     let uploadFile = event.target.files[0];
     setFile(uploadFile);
-    setFileName(uploadFile.name);
+    setFileName(uploadFile?.name);
     console.log("uploadFile", uploadFile);
   };
 
@@ -113,71 +111,73 @@ const CustomerAdd = ({ stateRefresh }) => {
         }}
       >
         <DialogTitle>고객 추가</DialogTitle>
-        <DialogContent>
-          프로필 이미지:{" "}
-          <input
-            className={styles.hidden}
-            accept="/image/*"
-            id="raised-button-file"
-            type="file"
-            file={file}
-            // value={fileName}
-            onChange={handleFileChange}
-          />
-          <label htmlFor="raised-button-file">
-            <Button
-              variant="containef"
-              color="primary"
-              component="span"
-              name="file"
-            >
-              {file === "" ? "프로필 이미지 선택" : fileName}
-            </Button>
-          </label>
-          <br />
-          <TextField
-            label="이름"
-            type="text"
-            name="name"
-            value={customers.name}
-            onChange={(event) =>
-              setCustomers({ ...customers, name: event.target.value })
-            }
-          />
-          <br />
-          <TextField
-            label="생년월일"
-            type="text"
-            name="birthday"
-            value={customers.birthday}
-            // onChange={(event) => handleValueChange(event)}
-            onChange={(event) =>
-              setCustomers({ ...customers, birthday: event.target.value })
-            }
-          />
-          <br />
-          <TextField
-            label="성별"
-            type="text"
-            name="gender"
-            value={customers.gender}
-            // onChange={(event) => handleValueChange(event)}
-            onChange={(event) =>
-              setCustomers({ ...customers, gender: event.target.value })
-            }
-          />
-          <br />
-          <TextField
-            label="직업"
-            type="text"
-            name="job"
-            value={customers.job}
-            // onChange={(event) => handleValueChange(event)}
-            onChange={(event) =>
-              setCustomers({ ...customers, job: event.target.value })
-            }
-          />
-        </DialogContent>
+        {customers && (
+          <DialogContent>
+            프로필 이미지:{" "}
+            <input
+              className={styles.hidden}
+              accept="/image/*"
+              id="raised-button-file"
+              type="file"
+              file={file}
+              // value={fileName}
+              onChange={handleFileChange}
+            />
+            <label htmlFor="raised-button-file">
+              <Button
+                variant="containef"
+                color="primary"
+                component="span"
+                name="file"
+              >
+                {file === "" ? "프로필 이미지 선택" : fileName}
+              </Button>
+            </label>
+            <br />
+            <TextField
+              label="이름"
+              type="text"
+              name="name"
+              value={customers?.name}
+              onChange={(event) =>
+                setCustomers({ ...customers, name: event.target.value })
+              }
+            />
+            <br />
+            <TextField
+              label="생년월일"
+              type="text"
+              name="birthday"
+              value={customers.birthday}
+              // onChange={(event) => handleValueChange(event)}
+              onChange={(event) =>
+                setCustomers({ ...customers, birthday: event.target.value })
+              }
+            />
+            <br />
+            <TextField
+              label="성별"
+              type="text"
+              name="gender"
+              value={customers.gender}
+              // onChange={(event) => handleValueChange(event)}
+              onChange={(event) =>
+                setCustomers({ ...customers, gender: event.target.value })
+              }
+            />
+            <br />
+            <TextField
+              label="직업"
+              type="text"
+              name="job"
+              value={customers.job}
+              // onChange={(event) => handleValueChange(event)}
+              onChange={(event) =>
+                setCustomers({ ...customers, job: event.target.value })
+              }
+            />
+          </DialogContent>
+        )}
         <DialogActions>
           <Button
             variant="contained"
