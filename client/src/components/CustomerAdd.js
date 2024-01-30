@@ -88,8 +88,8 @@ const CustomerAdd = ({ stateRefresh }) => {
 
   const styles = () => ({
     hidden: {
-      // display: "none",
-      backgroundColor: "red",
+      display: "none",
+      // backgroundColor: "red",
     },
   });
 
@@ -113,9 +113,8 @@ const CustomerAdd = ({ stateRefresh }) => {
         <DialogTitle>고객 추가</DialogTitle>
         {customers && (
           <DialogContent>
-            프로필 이미지:{" "}
             <input
-              className={styles.hidden}
+              style={{ display: "none" }}
               accept="/image/*"
               id="raised-button-file"
               type="file"
@@ -125,16 +124,18 @@ const CustomerAdd = ({ stateRefresh }) => {
             />
             <label htmlFor="raised-button-file">
               <Button
-                variant="containef"
+                style={{ marginBottom: "20px" }}
+                variant="contained"
                 color="primary"
                 component="span"
                 name="file"
               >
-                {file === "" ? "프로필 이미지 선택" : fileName}
+                {fileName === "" ? "프로필 이미지 선택" : fileName}
               </Button>
             </label>
             <br />
             <TextField
+              style={{ marginBottom: "10px" }}
               label="이름"
               type="text"
               name="name"
@@ -145,6 +146,7 @@ const CustomerAdd = ({ stateRefresh }) => {
             />
             <br />
             <TextField
+              style={{ marginBottom: "10px" }}
               label="생년월일"
               type="text"
               name="birthday"
@@ -156,6 +158,7 @@ const CustomerAdd = ({ stateRefresh }) => {
             />
             <br />
             <TextField
+              style={{ marginBottom: "10px" }}
               label="성별"
               type="text"
               name="gender"
@@ -167,6 +170,7 @@ const CustomerAdd = ({ stateRefresh }) => {
             />
             <br />
             <TextField
+              style={{ marginBottom: "10px" }}
               label="직업"
               type="text"
               name="job"
