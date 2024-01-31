@@ -19,6 +19,7 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
+import SearchInput from "./components/Input";
 
 /*
   리액트가 컴포넌트를 실행할 때의 라이프 사이클은 아래를 따른다
@@ -36,69 +37,69 @@ import SearchIcon from "@mui/icons-material/Search";
   개발자는 상태만 잘 관리해주면 된다
 */
 
-function App() {
-  const theme = createTheme();
+const theme = createTheme();
 
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
+const Root = styled("div")(({ theme }) => ({
+  width: "100%",
+  minWidth: 1080,
+  // marginTop: theme.spacing(3),
+  // overflowX: "auto",
+}));
+
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(1),
+    width: "auto",
+  },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  width: "100%",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
     [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  }));
-
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
-
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    width: "100%",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
+      width: "12ch",
+      "&:focus": {
+        width: "20ch",
       },
     },
-  }));
+  },
+}));
 
-  const Root = styled("div")(({ theme }) => ({
-    width: "100%",
-    minWidth: 1080,
-    // marginTop: theme.spacing(3),
-    // overflowX: "auto",
-  }));
+const Menu = styled("div")(({ theme }) => ({
+  // width: 17,
+  // height: 17,
+  // backgroundColor: "red",
+  // marginTop: theme.spacing(0, 2),
+  marginTop: 10,
+  marginBottom: 10,
+  display: "flex",
+  justifyContent: "center",
+}));
 
-  const Menu = styled("div")(({ theme }) => ({
-    // width: 17,
-    // height: 17,
-    // backgroundColor: "red",
-    // marginTop: theme.spacing(0, 2),
-    marginTop: 10,
-    marginBottom: 10,
-    display: "flex",
-    justifyContent: "center",
-  }));
-
+function App() {
   const styles = () => ({
     root: {
       width: "100%",
@@ -131,6 +132,7 @@ function App() {
 
   useEffect(() => {
     console.log("렌더링1 🐰", isLoading);
+    callApi();
 
     let timer = setInterval(() => {
       progress(completed);
@@ -138,9 +140,6 @@ function App() {
     }, 300);
 
     console.log("렌더링2 🐰");
-
-    callApi();
-    // setSearchKeyword("");
     clearInterval(timer);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -161,8 +160,8 @@ function App() {
   };
 
   const progress = (completed) => {
+    console.log("렌더링22?? 🐰", completed);
     setCompleted((completed) => (completed >= 100 ? 0 : completed + 5));
-    console.log("렌더링22?? 🐰");
   };
 
   const classes = styles();
@@ -177,109 +176,113 @@ function App() {
   ];
 
   const handleValueChange = (e) => {
+    // console.log("Input Value:", e.target.value);
     setSearchKeyword(e.target.value);
   };
 
   const filteredComponents = (data) => {
-    console.log("data", data);
-    console.log("searchKeyword", searchKeyword);
-    data = data?.filter((c) => {
-      return c?.name.indexOf(searchKeyword) > -1;
-    });
-    return data?.map((c) => {
-      console.log("1");
-      return (
-        <Customer
-          key={c.id}
-          customer={c}
-          stateRefresh={stateRefresh}
-          // id={c.id}
-          // image={c.image}
-          // name={c.name}
-          // birthday={c.birthday}
-          // gender={c.gender}
-          // job={c.job}
-          onLoad={() => setIsLoading(false)}
-        />
-      );
-    });
+    // console.log("data", data);
+    // console.log("searchKeyword", searchKeyword);
+    if (data) {
+      data = data?.filter((c) => {
+        return c?.name.indexOf(searchKeyword) > -1;
+      });
+      return data?.map((c) => {
+        console.log("1");
+        return (
+          <Customer
+            key={c.id}
+            customer={c}
+            stateRefresh={stateRefresh}
+            onLoad={() => setIsLoading(false)}
+          />
+        );
+      });
+    }
   };
 
   return (
-    // <div sx={classes.root}>
-    <Root>
-      <ThemeProvider theme={theme}>
-        <Box sx={{ flexGrow: 1 }}>
-          <AppBar position="static">
-            <Toolbar>
-              <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="open drawer"
-                sx={{ mr: 2 }}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-              >
-                MUI
-              </Typography>
-              <Search>
-                <SearchIconWrapper>
-                  <SearchIcon />
-                </SearchIconWrapper>
-                <StyledInputBase
-                  placeholder="검색하기"
-                  inputProps={{ "aria-label": "search" }}
-                  name="searchKeyword"
-                  value={searchKeyword}
-                  onChange={handleValueChange}
-                  // onChange={(event) => setSearchKeyword(event.target.value)}
-                />
-              </Search>
-            </Toolbar>
-          </AppBar>
-        </Box>
-        <Menu>
-          <CustomerAdd stateRefresh={stateRefresh} />
-        </Menu>
-        <Paper sx={classes.paper}>
-          <Table sx={classes.table}>
-            <TableHead>
-              <TableRow>
-                {cellList.map((cell, i) => {
-                  return (
-                    <TableCell key={i} sx={classes.tableHead}>
-                      {cell}
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {true && customers? (
-                filteredComponents(customers)
-              ) : (
+    <div sx={classes.root}>
+      <Root>
+        <ThemeProvider theme={theme}>
+          <Box sx={{ flexGrow: 1 }}>
+            <AppBar position="static">
+              <Toolbar>
+                <IconButton
+                  size="large"
+                  edge="start"
+                  color="inherit"
+                  aria-label="open drawer"
+                  sx={{ mr: 2 }}
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Typography
+                  variant="h6"
+                  noWrap
+                  component="div"
+                  sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+                >
+                  MUI
+                </Typography>
+
+                <Search>
+                  <SearchIconWrapper>
+                    <SearchIcon />
+                  </SearchIconWrapper>
+                  <SearchInput
+                    searchKeyword={searchKeyword}
+                    setSearchKeyword={setSearchKeyword}
+                  />
+
+                  {/* <StyledInputBase
+                    placeholder="검색하기"
+                    inputProps={{ "aria-label": "search" }}
+                    name="searchKeyword"
+                    value={searchKeyword}
+                    onChange={handleValueChange}
+                  /> */}
+
+                </Search>
+              </Toolbar>
+            </AppBar>
+          </Box>
+          <Menu>
+            <CustomerAdd stateRefresh={stateRefresh} />
+          </Menu>
+          <Paper sx={classes.paper}>
+            <Table sx={classes.table}>
+              <TableHead>
                 <TableRow>
-                  <TableCell colSpan={"6"} align="center">
-                    <CircularProgress
-                      sx={classes.progress}
-                      variant="determinate"
-                      value={completed}
-                    />
-                  </TableCell>
+                  {cellList.map((cell, i) => {
+                    return (
+                      <TableCell key={i} sx={classes.tableHead}>
+                        {cell}
+                      </TableCell>
+                    );
+                  })}
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </Paper>
-      </ThemeProvider>
-    </Root>
+              </TableHead>
+              <TableBody>
+                {true && customers ? (
+                  filteredComponents(customers)
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={"6"} align="center">
+                      <CircularProgress
+                        sx={classes.progress}
+                        variant="determinate"
+                        value={completed}
+                      />
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </Paper>
+        </ThemeProvider>
+      </Root>
+    </div>
   );
 }
 

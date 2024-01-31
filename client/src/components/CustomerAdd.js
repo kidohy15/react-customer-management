@@ -8,6 +8,7 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
+import Refrigerator from "./Test.js";
 
 const CustomerAdd = ({ stateRefresh }) => {
   const [file, setFile] = useState([]);
@@ -199,7 +200,9 @@ const CustomerAdd = ({ stateRefresh }) => {
           </Button>
         </DialogActions>
       </Dialog>
+      
     </div>
+    
 
     // 기존 html 방식
     // <form onSubmit={(event) => handleFormSubmit(event)}>
